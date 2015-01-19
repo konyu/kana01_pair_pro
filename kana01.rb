@@ -63,6 +63,7 @@ class Kana01
   def solve(siki)
 
     unless siki[1].nil? && siki[2].nil?
+      p siki[1]
       x = calc(siki[1])
       if x == siki[2].to_i
         p "正解"
@@ -71,12 +72,10 @@ class Kana01
   end
 
   def calc(siki2)
-    p siki2
     siki_arr = siki_to_a(siki2)
-    siki_arr = keisan(siki_arr, "|")
-    siki_arr = keisan(siki_arr, "&")
-    siki_arr = keisan(siki_arr, "+")
-    siki_arr = keisan(siki_arr, "*")
+    %w(| & + *).each do |kigo|
+      siki_arr = keisan(siki_arr, kigo)
+    end
     siki_arr[0]
   end
 
@@ -112,23 +111,7 @@ class Kana01
   end
 
   def siki_to_a(siki2)
-    rtn =[]
-    tmp= siki2.split("")
-    tmp.each_with_index do |char, i|
-      # p char
-      if /[0-9]/ =~ char
-        if i==0
-          rtn << char
-        elsif /[0-9]/ =~ tmp[i-1]
-          rtn.last << char
-        else
-          rtn << char
-        end
-       else
-         rtn << char
-      end
-    end
-    rtn
+    siki2.split(/(\d+)/).drop(1)
   end
 end
 
